@@ -4,13 +4,14 @@ import express, {Express} from "express"
 
 import socketio, {Socket} from "socket.io"
 
+const port = process.env.PORT || 5000
+
 async function main() {
     await mongo.init()
     //let result = await historyDAO.getAllHistory()
     //console.log(result)
 
     const app : Express = express()
-    app.set("port", 5000)
     let httpserver = require("http").Server(app)
     let io = socketio(httpserver)
 
@@ -23,8 +24,8 @@ async function main() {
 
     });
 
-    const server = httpserver.listen(3000, function() {
-        console.log("listening on *:3000");
+    const server = httpserver.listen(port, function() {
+        console.log(`Listening on ${port}`);
     });
 
 
