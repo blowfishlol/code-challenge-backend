@@ -3,6 +3,7 @@ import History from "../models/History";
 import Message from "../models/Message";
 import {MathNode, parse} from "mathjs";
 import {isValidExpressionArray} from "../utils/validationUtils";
+import {validateAndCalculate} from "../utils/mathUtils";
 
 export async function generateResponse(message: Message) : Promise<Message[]>{
 
@@ -14,18 +15,7 @@ export async function generateResponse(message: Message) : Promise<Message[]>{
         })
     } else {
 
-        let expression : MathNode = parse(message.content);
-        let expressionCheck : string[] =  expression.toString().split(/[\s(\)]/).filter(t=>t!=="");
-        if(!isValidExpressionArray(expressionCheck)) {
-            throw Error("INVALID_CHARACTER");
-        }
-
-        let result = expression.evaluate();
-
-        if(result instanceof Object) {
-            throw Error("NO_VARIABLE_ALLOWED");
-        }
-
+        let result = validateAndCalculate(message)
         console.log("Evaluate Result", typeof result, result);
         let history = new History(message.content, result);
         await historyDAO.insert(history);

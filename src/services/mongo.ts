@@ -18,7 +18,6 @@ class MongoService {
     }
 
     async init() {
-        console.log(uri)
         await this.client.connect();
         this._ready = true;
     }
