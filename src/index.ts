@@ -29,13 +29,14 @@ async function main() {
                     socket.emit("response", messages)
                 })
                 .catch(err=>{
+                    console.error(err.message)
                     socket.emit("response", [new Message("server", `Error in processing input: ${message.content}`)])
                 })
         })
 
     });
 
-    const server = httpserver.listen(port, function() {
+    httpserver.listen(port, () => {
         console.log(`Listening on ${port}`);
     });
 
