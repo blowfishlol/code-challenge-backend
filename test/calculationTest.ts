@@ -33,7 +33,7 @@ describe("Test calculations", () =>{
   })
 
   describe("calculation with e notation" , () =>{
-    it('should return', () =>{
+    it('should return correct value', () =>{
       let expression = "52e+2 + 5 - 2e+5"
       let result = 52e+2 + 5 - 2e+5
       let message = new Message("client", expression)
