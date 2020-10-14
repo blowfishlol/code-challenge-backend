@@ -3,6 +3,7 @@ import mongo from "./services/mongo"
 import express, {Express} from "express"
 
 import socketio, {Socket} from "socket.io"
+import History from "./models/History"
 
 const port = process.env.PORT || 5000
 
@@ -19,7 +20,10 @@ async function main() {
         console.log("a user connected");
 
         socket.on("message", (message : any) =>{
-            socket.emit("response", `WOW! ${message}`)
+            let result = eval(message)
+            let history = new History(message, result)
+            historyDAO.insert(history)
+            socket.emit("response", `Result: ${result}`)
         })
 
     });
