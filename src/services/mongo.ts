@@ -1,31 +1,36 @@
 import {Db, MongoClient} from 'mongodb'
 
-const uri = `mongodb://localhost:27017`
+let uri = "mongodb://";
+if(process.env.DB_USERNAME && process.env.DB_PASSWORD) {
+    uri = `${uri}${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_ADDRESS}/${process.env.DB_NAME}`
+} else {
+    uri = `${uri}${process.env.DB_ADDRESS}/${process.env.DB_NAME}`
+}
 
 class MongoService {
 
-    client: MongoClient
-    _ready: boolean
+    client: MongoClient;
+    _ready: boolean;
 
     constructor() {
-        this._ready = false
-        const uri = `mongodb://localhost:27017`
-        this.client = new MongoClient(uri,{ useUnifiedTopology: true } )
+        this._ready = false;
+        this.client = new MongoClient(uri,{ useUnifiedTopology: true } );
     }
 
     async init() {
-        await this.client.connect()
-        this._ready = true
+        console.log(uri)
+        await this.client.connect();
+        this._ready = true;
     }
 
     getDb() : Db {
         if(!this._ready) {
-            throw new Error("Connection not ready!")
+            throw new Error("Connection not ready!");
         }
-        return this.client.db("calculator_history")
+        return this.client.db(process.env.DB_NAME);
     }
 
 }
 
 
-export default new MongoService()
+export default new MongoService();
