@@ -23,16 +23,14 @@ async function main() {
         console.log("a user connected");
 
         socket.on("message", (message : Message) =>{
-
             generateResponse(message)
                 .then(messages=>{
+                    console.log("Emitting", messages)
                     socket.emit("response", messages)
                 })
                 .catch(err=>{
-                    console.error(err)
                     socket.emit("response", [new Message("server", `Error in processing input: ${message.content}`)])
                 })
-
         })
 
     });
