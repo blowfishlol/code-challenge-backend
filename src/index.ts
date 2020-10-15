@@ -3,7 +3,7 @@ import mongo from "./services/mongo"
 import express, {Express} from "express"
 import socketio, {Socket} from "socket.io"
 import Message from "./models/Message";
-import {addMessageEventHandlerToSocket, generateResponse} from "./socketHandlers/messageHandler";
+import {handleMessageEvent} from "./socketHandlers/messageHandler";
 
 
 const port = process.env.PORT || 5000
@@ -17,8 +17,7 @@ async function main() {
 
     io.on("connection", (socket: Socket) => {
         console.log("a user connected");
-
-        addMessageEventHandlerToSocket(socket);
+        socket.on('message', (data) => {handleMessageEvent(socket, data)});
 
     });
 
