@@ -4,12 +4,10 @@ import Message from "../models/Message";
 
 export function calculateFromMessage(message: Message) {
     //format the expression to be seperated with space
-    let expression : MathNode = parse(message.content);
-
     if(message.content.toLowerCase().includes("exponent")) {
         throw Error(`Invalid input 'exponent'`)
     }
-    let replacedExponent = message.content.replace(/e\+/g, "exponent").replace(" ", "")
+    let replacedExponent = message.content.replace(/e\+/g, "exponent").replace(/\s/g, "")
     let numberList = replacedExponent.replace(/[\(\+\-\*\/\^\%\)]/g, "#").replace(/exponent/g, "e+").split("#").filter(t=>t!=="")
     let symbolList = replacedExponent.replace(/[^\(\+\-\*\/\^\%\)]/g, "%").split("%").filter(t=>t!=="")
     console.log(symbolList)
@@ -26,6 +24,7 @@ export function calculateFromMessage(message: Message) {
         throw Error(`Invalid symbol '${validSymbolReport.problem}'`)
     }
 
+    let expression : MathNode = parse(message.content);
     let result = expression.evaluate();
 
     if(result instanceof Object) {
