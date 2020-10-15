@@ -14,6 +14,15 @@ describe("Test calculations", () =>{
     })
   })
 
+  describe('starts with negative calculation', () =>{
+    it('should return 45', () =>{
+      let expression = "-5 + 20 + 5 * 6"
+      let result = 45
+      let message = new Message("client", expression);
+      expect(calculateFromMessage(message)).to.equal(result);
+    })
+  })
+
   describe("calculation with parentheses", () =>{
     it('should return 34', () =>{
       let expression = "5 + 9 + (32/8) * 5";
@@ -58,6 +67,14 @@ describe("Test calculations", () =>{
     })
   });
 
+  describe("calculation with weird decimal", () =>{
+    it("should throw error", () =>{
+      let expression = "7.2.5 + 64";
+      let message = new Message("client", expression);
+      expect(() => calculateFromMessage(message) ).to.throw();
+    })
+  })
+
   describe("inject program termination" , () =>{
     it('should throw error', () =>{
       let expression = "process.exit(1)";
@@ -65,6 +82,15 @@ describe("Test calculations", () =>{
       expect(() => calculateFromMessage(message) ).to.throw();
     })
   });
+
+
+  describe("Missing exponent", () =>{
+    it("should throw error", () =>{
+      let expression = "5+ 10-64+ 5e+";
+      let message = new Message("client", expression);
+      expect(() => calculateFromMessage(message) ).to.throw();
+    })
+  })
 
   describe("inject require" , () =>{
     it('should throw error', () =>{
@@ -89,5 +115,7 @@ describe("Test calculations", () =>{
       expect(() => calculateFromMessage(message) ).to.throw();
     })
   })
+
+
 
 });

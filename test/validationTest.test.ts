@@ -57,6 +57,11 @@ describe("Number validation", () =>{
       let arr = "5 10 5e+10 34 63 10.63 512.234 5x".split(" ")
       expect(isValidNumbers(arr)).to.be.eql({success: false, problem: '5x'});
     })
+
+    it('success should be false and problem should be 1e', () =>{
+      let arr = "5 10 5.0 1e".split(" ")
+      expect(isValidNumbers(arr)).to.be.eql({success: false, problem: '1e'});
+    })
   })
 
 
