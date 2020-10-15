@@ -4,6 +4,7 @@ import Message from "../models/Message";
 import {MathNode, parse} from "mathjs";
 import {isValidExpressionArray} from "../utils/validationUtils";
 import {calculateFromMessage} from "../utils/mathUtils";
+import {Socket} from "socket.io";
 
 export async function generateResponse(message: Message) : Promise<Message[]>{
 
@@ -21,4 +22,16 @@ export async function generateResponse(message: Message) : Promise<Message[]>{
         return [new Message("server", `Result: ${result}`)];
     }
 
+}
+
+export function addMessageEventHandlerToSocket(socket: Socket) {
+    socket.on("message", (message : Message) =>{
+        generateResponse(message)
+            .then(messages=>{
+                socket.emit("response", messages)
+            })
+            .catch(err=>{
+                socket.emit("response", [new Message("server", `Error in processing input. ${err.message}`)])
+            })
+    });
 }

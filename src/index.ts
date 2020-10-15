@@ -3,7 +3,7 @@ import mongo from "./services/mongo"
 import express, {Express} from "express"
 import socketio, {Socket} from "socket.io"
 import Message from "./models/Message";
-import {generateResponse} from "./socketHandlers/messageController";
+import {addMessageEventHandlerToSocket, generateResponse} from "./socketHandlers/messageHandler";
 
 
 const port = process.env.PORT || 5000
@@ -18,15 +18,7 @@ async function main() {
     io.on("connection", (socket: Socket) => {
         console.log("a user connected");
 
-        socket.on("message", (message : Message) =>{
-            generateResponse(message)
-                .then(messages=>{
-                    socket.emit("response", messages)
-                })
-                .catch(err=>{
-                    socket.emit("response", [new Message("server", `Error in processing input. ${err.message}`)])
-                })
-        })
+        addMessageEventHandlerToSocket(socket);
 
     });
 
