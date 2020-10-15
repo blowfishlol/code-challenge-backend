@@ -14,7 +14,6 @@ async function generateResponse(message: Message) : Promise<Message[]>{
         })
     } else {
         let result = calculateFromMessage(message);
-        console.log("Evaluate Result", typeof result, result);
         let history = new History(message.content, result);
         await historyDAO.insert(history);
         return [new Message("server", `Result: ${result}`)];
