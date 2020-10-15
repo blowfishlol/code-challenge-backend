@@ -1,4 +1,4 @@
-import mongo from "../services/mongo"
+import mongo from "../services/MongoService"
 import History from "../models/History"
 
 export default {
@@ -9,7 +9,7 @@ export default {
     },
 
     getLast10: async function() : Promise<History[]> {
-        let results = await mongo.getDb().collection("history").find({}).sort({timestamp: -1}).limit(10).toArray()
+        let results = await mongo.getDb().collection("history").find({}).sort({timestamp: -1}).limit(10).toArray();
         return results.map(r => new History(r.command, r.result, r.timestamp))
     },
 

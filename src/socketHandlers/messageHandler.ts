@@ -1,8 +1,6 @@
 import historyDAO from "../daos/historyDAO";
 import History from "../models/History";
 import Message from "../models/Message";
-import {MathNode, parse} from "mathjs";
-import {isValidExpressionArray} from "../utils/validationUtils";
 import {calculateFromMessage} from "../utils/mathUtils";
 import {Socket} from "socket.io";
 
@@ -15,7 +13,7 @@ async function generateResponse(message: Message) : Promise<Message[]>{
             return new Message("server", `Command@${dateString} : ${r.command} = ${r.result}`, new Date())
         })
     } else {
-        let result = calculateFromMessage(message)
+        let result = calculateFromMessage(message);
         console.log("Evaluate Result", typeof result, result);
         let history = new History(message.content, result);
         await historyDAO.insert(history);

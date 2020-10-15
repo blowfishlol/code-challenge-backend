@@ -4,4 +4,4 @@ export const wait = (ms: number) =>{
             resolve()
         }, ms)
     })
-}
+};

@@ -2,19 +2,6 @@ interface Report {
     success: boolean,
     problem?: string
 }
-
-export function isValidExpressionArray(inputs: string[]) {
-    for(let symbol of inputs) {
-        if(isNaN(Number(symbol))) {
-            if(!/[*\/+\-\%\^]/.test(symbol)) {
-                //console.log("Problematic", symbol)
-                return false
-            }
-        }
-    }
-    return true
-}
-
 export function isValidNumbers(inputs: string[]) : Report{
     for(let number of inputs) {
         if(!isNumber(number)) {
@@ -44,11 +31,7 @@ export function isValidSymbols(inputs: string[]) : Report {
 }
 
 export function isSymbol(input: string) : boolean {
-    return /[\(*\/+\-\%\^\)]/.test(input)
-}
-
-export function isOperator(input: string) : boolean {
-    return /[*\/+\-\^]/.test(input)
+    return /[(*\/+\-%^)]/.test(input)
 }
 
 export function isNumber(input: string) : boolean {

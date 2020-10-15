@@ -1,19 +1,18 @@
 import 'dotenv/config'
-import mongo from "./services/mongo"
+import mongo from "./services/MongoService"
 import express, {Express} from "express"
 import socketio, {Socket} from "socket.io"
-import Message from "./models/Message";
 import {handleMessageEvent} from "./socketHandlers/messageHandler";
 
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 
 async function main() {
-    await mongo.init()
+    await mongo.init();
 
-    const app : Express = express()
-    let httpserver = require("http").Server(app)
-    let io = socketio(httpserver)
+    const app : Express = express();
+    let httpserver = require("http").Server(app);
+    let io = socketio(httpserver);
 
     io.on("connection", (socket: Socket) => {
         console.log("a user connected");
@@ -32,4 +31,4 @@ async function main() {
 
 main().catch((err) =>{
     console.error(err)
-})
+});
