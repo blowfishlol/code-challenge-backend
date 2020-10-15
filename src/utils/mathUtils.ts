@@ -10,10 +10,7 @@ export function calculateFromMessage(message: Message) {
     let replacedExponent = message.content.replace(/e\+/g, "exponent").replace(/\s/g, "")
     let numberList = replacedExponent.replace(/[\(\+\-\*\/\^\%\)]/g, "#").replace(/exponent/g, "e+").split("#").filter(t=>t!=="")
     let symbolList = replacedExponent.replace(/[^\(\+\-\*\/\^\%\)]/g, "%").split("%").filter(t=>t!=="")
-    console.log(symbolList)
-    //console.log(message.content)
-    console.log(numberList);
-
+   
     let numberValidReport = isValidNumbers(numberList)
     if(!numberValidReport.success) {
         throw Error(`Invalid input '${numberValidReport.problem}'`)
