@@ -24,8 +24,7 @@ async function main() {
                     socket.emit("response", messages)
                 })
                 .catch(err=>{
-                    console.error(err.message)
-                    socket.emit("response", [new Message("server", `Error in processing input: ${message.content}`)])
+                    socket.emit("response", [new Message("server", `Error in processing input. ${err.message}`)])
                 })
         })
 

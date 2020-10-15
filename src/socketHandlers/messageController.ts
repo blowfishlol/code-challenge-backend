@@ -3,7 +3,7 @@ import History from "../models/History";
 import Message from "../models/Message";
 import {MathNode, parse} from "mathjs";
 import {isValidExpressionArray} from "../utils/validationUtils";
-import {validateAndCalculate} from "../utils/mathUtils";
+import {calculateFromMessage} from "../utils/mathUtils";
 
 export async function generateResponse(message: Message) : Promise<Message[]>{
 
@@ -14,8 +14,7 @@ export async function generateResponse(message: Message) : Promise<Message[]>{
             return new Message("server", `Command@${dateString} : ${r.command} = ${r.result}`, new Date())
         })
     } else {
-
-        let result = validateAndCalculate(message)
+        let result = calculateFromMessage(message)
         console.log("Evaluate Result", typeof result, result);
         let history = new History(message.content, result);
         await historyDAO.insert(history);
