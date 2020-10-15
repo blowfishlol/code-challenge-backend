@@ -35,5 +35,9 @@ export function isSymbol(input: string) : boolean {
 }
 
 export function isNumber(input: string) : boolean {
-    return input.length > 0 && !isNaN(Number(input))
+    return input.length > 0 && input!==" " && !isNaN(Number(input))
+}
+
+export function isOperator(input: string) : boolean {
+    return /[*\/+\-%^]/.test(input)
 }

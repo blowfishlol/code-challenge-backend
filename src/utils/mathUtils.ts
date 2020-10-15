@@ -1,5 +1,5 @@
 import {MathNode, parse} from "mathjs";
-import {isNumber, isSymbol} from "./validationUtils";
+import {isNumber, isOperator, isSymbol} from "./validationUtils";
 import Message from "../models/Message";
 
 export function calculateFromMessage(message: Message) {
@@ -24,11 +24,11 @@ function tokenizeInput(input: string) : string[] {
     let tokens : string[] = [];
     let currentNumber : string = "";
 
-    let content = input.replace(/\s/g, "");
+    //replace double whitespace with single space
+    let content = input.trim().replace(/\s\s+/g, " ")
 
     for(let i = 0 ; i < content.length ; i ++) {
         let curr = content.charAt(i);
-
 
         if(isNumber(curr) || curr === ".") { //Check if number
             currentNumber += curr
@@ -59,6 +59,12 @@ function tokenizeInput(input: string) : string[] {
 
             }
             tokens.push(curr)
+        } else if(curr === " ") {
+            let next = content.charAt(i+1);
+            let prev = content.charAt(i-1)
+            if(isNumber(prev) && isNumber(next)) {
+                throw Error("Unexpected Whitespace")
+            }
         } else {
             throw Error("Unexpected Character " + curr)
         }

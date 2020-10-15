@@ -49,6 +49,14 @@ describe("Test calculations", () =>{
     })
   });
 
+  describe("expression have space between numbers" ,() =>{
+    it('should throw error', () =>{
+      let expression = "2 + 6 32";
+      let message = new Message("client", expression);
+      expect(()=>calculateFromMessage(message) ).to.throw();
+    })
+  });
+
   describe("calculation with e notation" , () =>{
     it('should return correct value', () =>{
       let expression = "52e+2 + 5 - 2e+5";
