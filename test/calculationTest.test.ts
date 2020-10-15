@@ -21,7 +21,6 @@ describe("Test calculations", () =>{
       let message = new Message("client", expression);
       expect(calculateFromMessage(message)).to.equal(result);
     });
-
   });
 
   describe("calculations begin with minus", () =>{
@@ -50,6 +49,15 @@ describe("Test calculations", () =>{
     })
   });
 
+  describe("calculation with decimal" , () =>{
+    it('should return correct value', () =>{
+      let expression = "5.525 + 22.9e+5 - 99 + (61 * -0.5) + 5.";
+      let result = 5.525 + 22.9e+5 - 99 + (61 * -0.5) + 5.;
+      let message = new Message("client", expression);
+      expect(calculateFromMessage(message) ).to.equal(result)
+    })
+  });
+
   describe("inject program termination" , () =>{
     it('should throw error', () =>{
       let expression = "process.exit(1)";
@@ -69,6 +77,14 @@ describe("Test calculations", () =>{
   describe("input wrong parentheses", () =>{
     it("should throw error", () =>{
       let expression = "5 + ((2+5) + (7+7)";
+      let message = new Message("client", expression);
+      expect(() => calculateFromMessage(message) ).to.throw();
+    })
+  })
+
+  describe("calculation with equality", () =>{
+    it("should throw error", () =>{
+      let expression = "5 + ((2+5) + (7+7)) = 26";
       let message = new Message("client", expression);
       expect(() => calculateFromMessage(message) ).to.throw();
     })
