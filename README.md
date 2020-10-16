@@ -13,8 +13,14 @@ The configuration of the server will be loaded from .env file.
 ## Possible Messages
 
 ### Mathematical expression
-When the client sends a valid mathematical expression, the server should calculate it. 
-The expression will be validated then will be calculated using [math.js](https://mathjs.org/)
+When the client sends a valid mathematical expression, the server should calculate it.
+Example: 
+- ```5 *3+2```
+- ```10+3^4+( 4/10 )```
+ 
+The expression will be validated then will be calculated. The calculation process is
+powered by [math.js](https://mathjs.org/).
+
 The possible operators are:
 - \+ Addition
 - \- Substraction
