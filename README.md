@@ -3,7 +3,8 @@
 This server will receive a connection established with [socket.io](https://socket.io/) from the
 [client](https://github.com/blowfishlol/code-challenge-frontend)
 
-This project requires [mongoDB](https://www.mongodb.com/) installed in the system.
+This project requires [mongoDB](https://www.mongodb.com/) installed in the system. The name
+of the database may be changed in .env and the collection name should be ```history```
 
 The configuration of the server will be loaded from .env file. 
 
