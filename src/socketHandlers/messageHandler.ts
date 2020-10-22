@@ -3,6 +3,7 @@ import History from "../models/History";
 import Message from "../models/Message";
 import {calculateFromMessage} from "../utils/mathUtils";
 import {Socket} from "socket.io";
+import {isNumber} from "../utils/validationUtils";
 
 async function generateResponse(message: Message) : Promise<Message[]>{
 
@@ -13,6 +14,22 @@ async function generateResponse(message: Message) : Promise<Message[]>{
             return new Message("server", `Command@${dateString} : ${r.command} = ${r.result}`, new Date())
         })
     } else {
+        let split = message.content.toLowerCase().split(" ")
+        if(split[0] === "sum") {
+            let x : string = split[1]
+            if(!isNumber(x)) {
+                throw new Error(`${x} is not a number!`)
+            }
+            let count = parseInt(x)
+            let histories = await historyDAO.getLastX(count);
+
+            let sum = histories.reduce((accumulator: number, el: History)=>{
+                return accumulator + el.result
+            }, 0)
+
+            return [new Message("server", `Sum: ${sum}`)];
+        }
+
         let result = calculateFromMessage(message);
         let history = new History(message.content, result);
         await historyDAO.insert(history);

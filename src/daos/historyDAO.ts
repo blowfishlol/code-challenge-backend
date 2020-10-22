@@ -13,6 +13,11 @@ export default {
         return results.map(r => new History(r.command, r.result, r.timestamp))
     },
 
+    getLastX: async function(x: number) : Promise<History[]> {
+        let results = await mongo.getDb().collection("history").find({}).sort({timestamp: -1}).limit(x).toArray();
+        return results.map(r=> new History(r.command, r.result, r.timestamp));
+    },
+
     insert: async function (history: History) {
         return mongo.getDb().collection("history").insertOne({
             ...history
